@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dreams:items/will"
+    "model": "dreams:item/will"
   }
 }
