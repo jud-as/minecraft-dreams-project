@@ -1,0 +1,15 @@
+{
+  "loader": "neoforge:obj",
+  "model": "dreams:models/block/test_block.obj",
+  "mtl_override": "dreams:models/block/test_block.mtl",
+  "flip_v": true,
+  "textures": {
+    "particle": "dreams:block/chassisbottom1_diff",
+    "texture0.png": "dreams:block/texture0",
+    "wheelfrtyres1_diff.png": "dreams:block/wheelfrtyres1_diff",
+    "detachdoorr50carpaint1_diff.png": "dreams:block/detachdoorr50carpaint1_diff",
+    "glassespivotglasslight1_diff.png": "dreams:block/glassespivotglasslight1_diff",
+    "chassisbottom1_diff.png": "dreams:block/chassisbottom1_diff",
+    "detachbumperb6licenseplate1_diff.png": "dreams:block/detachbumperb6licenseplate1_diff"
+  }
+}

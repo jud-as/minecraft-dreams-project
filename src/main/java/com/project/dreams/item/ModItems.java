@@ -8,7 +8,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Dreams.MOD_ID);
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(Dreams.MOD_ID);
 
     public static final DeferredItem<Item> WILL = ITEMS.registerSimpleItem(
             "will",

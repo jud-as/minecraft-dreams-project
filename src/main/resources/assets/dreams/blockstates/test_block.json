@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dreams:block/test_block"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+newmtl texture0
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka texture0.png
+map_Kd texture0.png
+map_d texture0.png
+
+newmtl Wheelfrrims1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka texture0.png
+map_Kd texture0.png
+map_d texture0.png
+
+newmtl Wheelfrtyres1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka wheelfrtyres1_diff.png
+map_Kd wheelfrtyres1_diff.png
+map_d wheelfrtyres1_diff.png
+
+newmtl Detachdoorr50carpaint1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka detachdoorr50carpaint1_diff.png
+map_Kd detachdoorr50carpaint1_diff.png
+map_d detachdoorr50carpaint1_diff.png
+
+newmtl Glassespivotglasslight1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 0.501961
+
+Ns 0
+
+map_Ka glassespivotglasslight1_diff.png
+map_Kd glassespivotglasslight1_diff.png
+map_d glassespivotglasslight1_diff.png
+
+newmtl Chassisbottom1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka chassisbottom1_diff.png
+map_Kd chassisbottom1_diff.png
+map_d chassisbottom1_diff.png
+
+newmtl Detachbumperb6licenseplate1Mtl
+# Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.396078 0.396078 0.396078 
+
+d 1
+
+Ns 0
+
+map_Ka detachbumperb6licenseplate1_diff.png
+map_Kd detachbumperb6licenseplate1_diff.png
+map_d detachbumperb6licenseplate1_diff.png
+
