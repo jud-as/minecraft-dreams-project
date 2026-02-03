@@ -1,0 +1,13 @@
+{
+  "itemGroup.dreams": "Aba do Dreams",
+  "item.dreams.will": "Vontade",
+
+  "dreams.configuration.title": "Configurações do Dreams",
+  "dreams.configuration.section.dreams.common.toml": "Configurações do Dreams",
+  "dreams.configuration.section.dreams.common.toml.title": "Configurações do Dreams",
+  "dreams.configuration.items": "Lista de Itens",
+  "dreams.configuration.logDirtBlock": "Log de Bloco de Terra",
+  "dreams.configuration.magicNumberIntroduction": "Texto do Número Mágico",
+  "dreams.configuration.magicNumber": "Número Mágico",
+  "options.iris.shaderPackSelection.sodium_tooltip": "Abre a tela de seleção de pacotes de sombreadores para gerenciar seus shaders."
+}

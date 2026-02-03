@@ -8,5 +8,6 @@
   "dreams.configuration.items": "Item List",
   "dreams.configuration.logDirtBlock": "Log Dirt Block",
   "dreams.configuration.magicNumberIntroduction": "Magic Number Text",
-  "dreams.configuration.magicNumber": "Magic Number"
+  "dreams.configuration.magicNumber": "Magic Number",
+  "options.iris.shaderPackSelection.sodium_tooltip": "Open the shader pack selection screen to manage your shader packs."
 }

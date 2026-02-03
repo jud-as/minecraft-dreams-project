@@ -19,6 +19,9 @@ group = mod_group_id
 
 repositories {
     // Add here additional repositories if required by some of the dependencies below.
+    maven {
+        url = 'https://api.modrinth.com'
+    }
 }
 
 base {
@@ -48,6 +51,14 @@ neoForge {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.testFramework.gpuValidation', 'false'
+            systemProperty 'neoforge.enabledGpuValidation', 'false'
+
+            systemProperty 'user.language', 'en'
+            systemProperty 'user.country', 'US'
+
+            programArgument '--language'
+            programArgument 'en_us'
         }
 
         server {
