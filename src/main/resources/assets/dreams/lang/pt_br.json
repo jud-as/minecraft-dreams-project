@@ -1,6 +1,16 @@
 {
   "itemGroup.dreams": "Aba do Dreams",
-  "item.dreams.will": "Vontade",
+  "item.dreams.will": "Will",
+  "item.dreams.oil_lamp": "Lâmpada de Óleo",
+  "item.dreams.oil_bottle": "Frasco de Óleo",
+
+  "message.dreams.oil_lamp.on": "Lâmpada acesa!",
+  "message.dreams.oil_lamp.off": "Lâmpada apagada!",
+  "message.dreams.oil_lamp.no_fuel": "Sem combustível suficiente!",
+  "message.dreams.oil_lamp.refueled": "Lâmpada reabastecida!",
+  "tooltip.dreams.oil_lamp.fuel": "Combustível: %s/%s",
+  "tooltip.dreams.oil_lamp.state.on": "Estado: Ligada",
+  "tooltip.dreams.oil_lamp.state.off": "Estado: Desligada",
 
   "dreams.configuration.title": "Configurações do Dreams",
   "dreams.configuration.section.dreams.common.toml": "Configurações do Dreams",

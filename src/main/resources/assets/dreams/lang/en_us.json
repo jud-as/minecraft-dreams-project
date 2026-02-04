@@ -1,6 +1,16 @@
  {
   "itemGroup.dreams": "Example Mod Tab",
   "item.dreams.will": "Will",
+  "item.dreams.oil_lamp": "Oil Lamp",
+  "item.dreams.oil_bottle": "Oil Bottle",
+
+  "message.dreams.oil_lamp.on": "Lamp turned on!",
+  "message.dreams.oil_lamp.off": "Lamp turned off!",
+  "message.dreams.oil_lamp.no_fuel": "Not enough fuel!",
+  "message.dreams.oil_lamp.refueled": "Lamp refueled!",
+  "tooltip.dreams.oil_lamp.fuel": "Fuel: %s/%s",
+  "tooltip.dreams.oil_lamp.state.on": "State: ON",
+  "tooltip.dreams.oil_lamp.state.off": "State: OFF",
 
   "dreams.configuration.title": "Dreams Configs",
   "dreams.configuration.section.dreams.common.toml": "Dreams Configs",

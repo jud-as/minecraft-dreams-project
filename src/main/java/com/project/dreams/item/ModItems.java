@@ -1,6 +1,7 @@
 package com.project.dreams.item;
 
 import com.project.dreams.Dreams;
+import com.project.dreams.item.domain.model.OilLamp;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -20,9 +21,14 @@ public class ModItems {
                     .build())
     );
 
-    public static final DeferredItem<Item> OIL_LAMP = ITEMS.registerSimpleItem(
+    public static final DeferredItem<OilLamp> OIL_LAMP = ITEMS.registerItem(
             "oil_lamp",
-            p -> new Item.Properties());
+            OilLamp::new
+    );
+
+    public static final DeferredItem<Item> OIL_BOTTLE = ITEMS.registerSimpleItem("oil_bottle");
+
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
