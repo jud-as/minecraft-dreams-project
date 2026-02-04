@@ -49,6 +49,8 @@ neoForge {
         client {
             client()
 
+            jvmArgument '-Xmx4G'
+
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
             systemProperty 'neoforge.testFramework.gpuValidation', 'false'

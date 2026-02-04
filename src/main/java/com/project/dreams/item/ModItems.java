@@ -20,6 +20,10 @@ public class ModItems {
                     .build())
     );
 
+    public static final DeferredItem<Item> OIL_LAMP = ITEMS.registerSimpleItem(
+            "oil_lamp",
+            p -> new Item.Properties());
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
