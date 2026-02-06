@@ -2,6 +2,7 @@
   "itemGroup.dreams": "Example Mod Tab",
   "item.dreams.will": "Will",
   "item.dreams.oil_lamp": "Oil Lamp",
+  "block.dreams.oil_lamp": "Oil Lamp Block",
   "item.dreams.oil_bottle": "Oil Bottle",
 
   "message.dreams.oil_lamp.on": "Lamp turned on!",

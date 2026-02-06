@@ -2,6 +2,7 @@
   "itemGroup.dreams": "Aba do Dreams",
   "item.dreams.will": "Will",
   "item.dreams.oil_lamp": "Lâmpada de Óleo",
+  "block.dreams.oil_lamp": "Bloco de Lâmpada de Óleo",
   "item.dreams.oil_bottle": "Frasco de Óleo",
 
   "message.dreams.oil_lamp.on": "Lâmpada acesa!",

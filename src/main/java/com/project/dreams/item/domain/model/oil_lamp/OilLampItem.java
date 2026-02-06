@@ -1,7 +1,11 @@
-package com.project.dreams.item.domain.model;
+package com.project.dreams.item.domain.model.oil_lamp;
 
-import com.project.dreams.Config;
-import com.project.dreams.item.ModItems;
+import com.project.dreams.Settings;
+import com.project.dreams.block.ModBlocks;
+import com.project.dreams.block.OilLampBlock;
+import com.project.dreams.block.domain.model.block_entity.OilLampBlockEntity;
+import com.project.dreams.item.service.ItemRegisterService;
+import com.project.dreams.item.service.oil_lamp.OilLampLogic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -13,25 +17,26 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LightBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-public class OilLamp extends Item {
-    // As configurações agora vêm do Config.java
-    private static final int TICKS_PER_SECOND = 20;
+public class OilLampItem extends BlockItem {
 
-    public OilLamp(Properties properties) {
-        // A durabilidade inicial pode ser baseada no valor padrão do config
-        super(properties.stacksTo(1).durability(100));
+    public OilLampItem(Properties properties) {
+        super(ModBlocks.OIL_LAMP_BLOCK.get(), properties.stacksTo(1).durability(100));
     }
 
     /**
@@ -41,22 +46,59 @@ public class OilLamp extends Item {
     public void inventoryTick(@NonNull ItemStack stack, @NonNull ServerLevel level, @NonNull Entity entity, EquipmentSlot slot) {
         ensureDefaults(stack);
 
+        OilLampLogic.tickFuel(
+            getFuel(stack), 
+            getTickAccum(stack), 
+            getIsOn(stack),
+            f -> setFuel(stack, f),
+            a -> setTickAccum(stack, a),
+            () -> setIsOn(stack, false)
+        );
+
         if (getIsOn(stack)) {
-            processConsumption(stack);
-            // Emissão de luz: coloca um bloco de luz na posição da entidade se for um jogador
             if (entity instanceof Player player) {
-                handleLightEmission(level, player);
+                handleLightEmission(level, player, stack);
+            }
+        } else {
+            BlockPos lastPos = stack.get(OilLampDataComponents.LIGHT_POS.get());
+            if (lastPos != null) {
+                removeLight(level, lastPos);
+                stack.remove(OilLampDataComponents.LIGHT_POS.get());
             }
         }
 
         mirrorDurability(stack);
     }
 
-    private void handleLightEmission(ServerLevel level, Player player) {
-        BlockPos pos = player.blockPosition().above(); // Luz na altura da cabeça/corpo
-        BlockState state = level.getBlockState(pos);
-        if (state.isAir()) {
-            level.setBlock(pos, Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, 15), 3);
+    @Override
+    public @NonNull InteractionResult place(@NonNull BlockPlaceContext context) {
+        ItemStack stack = context.getItemInHand();
+        BlockPos lightPos = stack.get(OilLampDataComponents.LIGHT_POS.get());
+        if (lightPos != null && context.getLevel() instanceof ServerLevel serverLevel) {
+            removeLight(serverLevel, lightPos);
+            stack.remove(OilLampDataComponents.LIGHT_POS.get());
+        }
+        return super.place(context);
+    }
+
+    private void handleLightEmission(ServerLevel level, Player player, ItemStack stack) {
+        BlockPos currentPos = player.blockPosition().above();
+        BlockPos lastPos = stack.get(OilLampDataComponents.LIGHT_POS.get());
+
+        if (lastPos != null && !lastPos.equals(currentPos)) {
+            removeLight(level, lastPos);
+        }
+
+        BlockState state = level.getBlockState(currentPos);
+        if (state.isAir() || state.is(Blocks.LIGHT)) {
+            level.setBlock(currentPos, Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, 15), 3);
+            stack.set(OilLampDataComponents.LIGHT_POS.get(), currentPos);
+        }
+    }
+
+    private void removeLight(ServerLevel level, BlockPos pos) {
+        if (level.getBlockState(pos).is(Blocks.LIGHT)) {
+            level.removeBlock(pos, false);
         }
     }
 
@@ -76,7 +118,7 @@ public class OilLamp extends Item {
         if (currentState) {
             turnOff(stack, player);
         } else {
-            int minToStart = Config.OIL_LAMP_FUEL_CONSUMPTION_RATE.get() + 1;
+            int minToStart = Settings.OIL_LAMP_FUEL_CONSUMPTION_RATE.get() + 1;
             if (currentFuel > minToStart) {
                 turnOn(stack, player);
             } else {
@@ -87,36 +129,6 @@ public class OilLamp extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    /**
-     * Processa o acumulador de ticks para garantir consumo constante por segundo.
-     */
-    private void processConsumption(ItemStack stack) {
-        int accum = getTickAccum(stack) + 1;
-
-        if (accum >= TICKS_PER_SECOND) {
-            consumeFuel(stack, Config.OIL_LAMP_FUEL_CONSUMPTION_RATE.get());
-            accum = 0;
-        }
-
-        setTickAccum(stack, accum);
-    }
-
-    /**
-     * Aplica a redução de combustível e verifica condições de desligamento automático.
-     */
-    private void consumeFuel(ItemStack stack, int amount) {
-        int fuel = Math.max(0, getFuel(stack) - amount);
-        
-        // Regra: Se o combustível atingir o nível crítico (1), desliga automaticamente
-        if (fuel <= 1) {
-            fuel = 1;
-            if (getIsOn(stack)) {
-                setIsOn(stack, false);
-            }
-        }
-        
-        setFuel(stack, fuel);
-    }
 
     private void turnOn(ItemStack stack, Player player) {
         setIsOn(stack, true);
@@ -134,49 +146,47 @@ public class OilLamp extends Item {
      */
     private void mirrorDurability(ItemStack stack) {
         int fuel = getFuel(stack);
-        int maxFuel = Config.OIL_LAMP_MAX_FUEL.get();
+        int maxFuel = Settings.OIL_LAMP_MAX_FUEL.get();
         stack.setDamageValue(Math.max(0, maxFuel - fuel));
     }
 
     private void ensureDefaults(ItemStack stack) {
-        if (!stack.has(OilLampDataComponents.IS_ON)) setIsOn(stack, false);
-        if (!stack.has(OilLampDataComponents.FUEL)) setFuel(stack, Config.OIL_LAMP_MAX_FUEL.get());
-        if (!stack.has(OilLampDataComponents.TICK_ACCUM)) setTickAccum(stack, 0);
+        if (!stack.has(OilLampDataComponents.IS_ON.get())) setIsOn(stack, false);
+        if (!stack.has(OilLampDataComponents.FUEL.get())) setFuel(stack, Settings.OIL_LAMP_MAX_FUEL.get());
+        if (!stack.has(OilLampDataComponents.TICK_ACCUM.get())) setTickAccum(stack, 0);
     }
 
-    // --- ENCAPSULAMENTO DE DADOS (Princípios OO) ---
-
     private boolean getIsOn(ItemStack stack) {
-        return stack.getOrDefault(OilLampDataComponents.IS_ON, false);
+        return stack.getOrDefault(OilLampDataComponents.IS_ON.get(), false);
     }
 
     private void setIsOn(ItemStack stack, boolean value) {
-        stack.set(OilLampDataComponents.IS_ON, value);
+        stack.set(OilLampDataComponents.IS_ON.get(), value);
     }
 
     private int getFuel(ItemStack stack) {
-        return stack.getOrDefault(OilLampDataComponents.FUEL, Config.OIL_LAMP_MAX_FUEL.get());
+        return stack.getOrDefault(OilLampDataComponents.FUEL.get(), Settings.OIL_LAMP_MAX_FUEL.get());
     }
 
     private void setFuel(ItemStack stack, int value) {
-        stack.set(OilLampDataComponents.FUEL, value);
+        stack.set(OilLampDataComponents.FUEL.get(), value);
     }
 
     // Extensão: método público para reabastecer de forma segura
     public void addFuel(ItemStack stack, int amount) {
         if (amount <= 0) return;
-        int maxFuel = Config.OIL_LAMP_MAX_FUEL.get();
+        int maxFuel = Settings.OIL_LAMP_MAX_FUEL.get();
         int fuel = Math.max(0, Math.min(maxFuel, getFuel(stack) + amount));
         setFuel(stack, fuel);
         mirrorDurability(stack);
     }
 
     private int getTickAccum(ItemStack stack) {
-        return stack.getOrDefault(OilLampDataComponents.TICK_ACCUM, 0);
+        return stack.getOrDefault(OilLampDataComponents.TICK_ACCUM.get(), 0);
     }
 
     private void setTickAccum(ItemStack stack, int value) {
-        stack.set(OilLampDataComponents.TICK_ACCUM, value);
+        stack.set(OilLampDataComponents.TICK_ACCUM.get(), value);
     }
 
     @Override
@@ -189,7 +199,7 @@ public class OilLamp extends Item {
 
         ensureDefaults(stack);
         int fuel = getFuel(stack);
-        int maxFuel = Config.OIL_LAMP_MAX_FUEL.get();
+        int maxFuel = Settings.OIL_LAMP_MAX_FUEL.get();
         boolean isOn = getIsOn(stack);
 
         output.accept(Component.translatable("tooltip.dreams.oil_lamp.fuel", fuel, maxFuel));
@@ -200,14 +210,19 @@ public class OilLamp extends Item {
 
 
     /**
-     * INTERAÇÃO PROFISSIONAL:
      * Permite reabastecer arrastando o frasco de óleo sobre a lâmpada no inventário.
      */
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess accessor) {
-        if (action == ClickAction.SECONDARY && other.is(ModItems.OIL_BOTTLE.get())) {
+    public boolean overrideOtherStackedOnMe(
+            @NonNull ItemStack stack,
+            @NonNull ItemStack other,
+            @NonNull Slot slot,
+            @NonNull ClickAction action,
+            @NonNull Player player,
+            @NonNull SlotAccess accessor) {
+        if (action == ClickAction.SECONDARY && other.is(ItemRegisterService.OIL_BOTTLE.get())) {
             int currentFuel = getFuel(stack);
-            int maxFuel = Config.OIL_LAMP_MAX_FUEL.get();
+            int maxFuel = Settings.OIL_LAMP_MAX_FUEL.get();
             
             if (currentFuel < maxFuel) {
                 addFuel(stack, 25); // Cada frasco recupera 25 unidades
@@ -217,5 +232,19 @@ public class OilLamp extends Item {
             }
         }
         return super.overrideOtherStackedOnMe(stack, other, slot, action, player, accessor);
+    }
+
+    @Override
+    protected boolean updateCustomBlockEntityTag(@NonNull BlockPos pos, @NonNull Level level, @Nullable Player player, @NonNull ItemStack stack, @NonNull BlockState state) {
+        boolean result = super.updateCustomBlockEntityTag(pos, level, player, stack, state);
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof OilLampBlockEntity lamp) {
+            lamp.setFuel(getFuel(stack));
+            // Sincroniza o estado LIT do bloco com o IS_ON do item
+            if (getIsOn(stack)) {
+                level.setBlock(pos, state.setValue(OilLampBlock.LIT, true), 3);
+            }
+        }
+        return result;
     }
 }
