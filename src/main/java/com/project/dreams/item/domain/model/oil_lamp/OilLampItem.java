@@ -1,9 +1,10 @@
 package com.project.dreams.item.domain.model.oil_lamp;
 
+import com.project.dreams.block.domain.model.oil_lamp.dto.mapper.OilLampFuelDTO;
 import com.project.dreams.Settings;
-import com.project.dreams.block.ModBlocks;
-import com.project.dreams.block.OilLampBlock;
-import com.project.dreams.block.domain.model.block_entity.OilLampBlockEntity;
+import com.project.dreams.block.service.BlockService;
+import com.project.dreams.block.domain.model.oil_lamp.block.OilLampBlock;
+import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntity;
 import com.project.dreams.item.service.ItemRegisterService;
 import com.project.dreams.item.service.oil_lamp.OilLampLogic;
 import net.minecraft.core.BlockPos;
@@ -36,7 +37,7 @@ import java.util.function.Consumer;
 public class OilLampItem extends BlockItem {
 
     public OilLampItem(Properties properties) {
-        super(ModBlocks.OIL_LAMP_BLOCK.get(), properties.stacksTo(1).durability(100));
+        super(BlockService.OIL_LAMP_BLOCK.get(), properties.stacksTo(1).durability(100));
     }
 
     /**
@@ -46,14 +47,7 @@ public class OilLampItem extends BlockItem {
     public void inventoryTick(@NonNull ItemStack stack, @NonNull ServerLevel level, @NonNull Entity entity, EquipmentSlot slot) {
         ensureDefaults(stack);
 
-        OilLampLogic.tickFuel(
-            getFuel(stack), 
-            getTickAccum(stack), 
-            getIsOn(stack),
-            f -> setFuel(stack, f),
-            a -> setTickAccum(stack, a),
-            () -> setIsOn(stack, false)
-        );
+        OilLampLogic.tickFuel(new ItemStackFuelWrapper(stack));
 
         if (getIsOn(stack)) {
             if (entity instanceof Player player) {
@@ -246,5 +240,43 @@ public class OilLampItem extends BlockItem {
             }
         }
         return result;
+    }
+
+    private class ItemStackFuelWrapper implements OilLampFuelDTO {
+        private final ItemStack stack;
+
+        public ItemStackFuelWrapper(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public int getFuel() {
+            return OilLampItem.this.getFuel(stack);
+        }
+
+        @Override
+        public void setFuel(int fuel) {
+            OilLampItem.this.setFuel(stack, fuel);
+        }
+
+        @Override
+        public int getTickAccum() {
+            return OilLampItem.this.getTickAccum(stack);
+        }
+
+        @Override
+        public void setTickAccum(int ticks) {
+            OilLampItem.this.setTickAccum(stack, ticks);
+        }
+
+        @Override
+        public boolean isLit() {
+            return OilLampItem.this.getIsOn(stack);
+        }
+
+        @Override
+        public void setLit(boolean lit) {
+            OilLampItem.this.setIsOn(stack, lit);
+        }
     }
 }

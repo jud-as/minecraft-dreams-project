@@ -1,4 +1,4 @@
-package com.project.dreams.mixin;
+package com.project.dreams.config.mixin;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

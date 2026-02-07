@@ -1,15 +1,14 @@
-package com.project.dreams.block;
+package com.project.dreams.block.domain.model.oil_lamp.block;
 
-import com.project.dreams.block.domain.model.block_entity.OilLampBlockEntity;
+import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntity;
 import com.mojang.serialization.MapCodec;
 import com.project.dreams.block.service.BlockEntityService;
-import com.project.dreams.item.service.ItemRegisterService;
-import com.project.dreams.item.domain.model.oil_lamp.OilLampDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.Containers;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -87,41 +86,20 @@ public class OilLampBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void attack(
-            @NonNull BlockState state, Level level,
-            @NonNull BlockPos pos,
-            @NonNull Player player) {
-        if (!level.isClientSide()) {
-            this.tryPickup(level, pos, state, player);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if (blockentity instanceof OilLampBlockEntity lamp && !level.isClientSide() && !player.isCreative()) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), lamp.toItemStack());
         }
-    }
-
-    private void tryPickup(Level level, BlockPos pos, BlockState state, Player player) {
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof OilLampBlockEntity lamp) {
-            ItemStack stack = new ItemStack(ItemRegisterService.OIL_LAMP.get());
-            stack.set(OilLampDataComponents.FUEL.get(), lamp.getFuel());
-            stack.set(OilLampDataComponents.IS_ON.get(), state.getValue(LIT));
-            
-            if (!player.addItem(stack)) {
-                player.drop(stack, false);
-            }
-            level.removeBlock(pos, false);
-        }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
-    protected @NonNull ItemStack getCloneItemStack(
-            @NonNull LevelReader level,
-            @NonNull BlockPos pos,
-            @NonNull BlockState state, boolean includeComponents) {
-        ItemStack stack = super.getCloneItemStack(level, pos, state, includeComponents);
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeComponents, Player player) {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof OilLampBlockEntity lamp) {
-            stack.set(OilLampDataComponents.FUEL.get(), lamp.getFuel());
-            stack.set(OilLampDataComponents.IS_ON.get(), state.getValue(LIT));
+            return lamp.toItemStack();
         }
-        return stack;
+        return super.getCloneItemStack(level, pos, state, includeComponents, player);
     }
-
 }

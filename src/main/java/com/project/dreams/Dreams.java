@@ -1,6 +1,6 @@
 package com.project.dreams;
 
-import com.project.dreams.block.ModBlocks;
+import com.project.dreams.block.service.BlockService;
 import com.project.dreams.block.service.BlockEntityService;
 import com.project.dreams.item.service.ItemRegisterService;
 import com.project.dreams.item.domain.model.oil_lamp.OilLampDataComponents;
@@ -46,7 +46,7 @@ public class Dreams {
         NeoForge.EVENT_BUS.register(this);
 
         ItemRegisterService.register(modEventBus);
-        ModBlocks.register(modEventBus);
+        BlockService.register(modEventBus);
         BlockEntityService.register(modEventBus);
         OilLampDataComponents.register(modEventBus);
 

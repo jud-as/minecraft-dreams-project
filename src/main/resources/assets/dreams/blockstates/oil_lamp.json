@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "dreams:block/oil_lamp" },
+    "lit=true": { "model": "dreams:block/oil_lamp" }
+  }
+}
