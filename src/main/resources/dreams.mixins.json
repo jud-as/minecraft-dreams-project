@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "IrisConfigMixin"
+    "IrisConfigMixin",
+    "CameraMixin"
   ],
   "injectors": {
     "defaultRequire": 1

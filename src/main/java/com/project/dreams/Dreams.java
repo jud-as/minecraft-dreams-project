@@ -4,6 +4,7 @@ import com.project.dreams.block.service.BlockService;
 import com.project.dreams.block.service.BlockEntityService;
 import com.project.dreams.item.service.ItemRegisterService;
 import com.project.dreams.item.domain.model.oil_lamp.OilLampDataComponents;
+import com.project.dreams.network.NetworkHandler;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -39,6 +40,7 @@ public class Dreams {
     public Dreams(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(NetworkHandler::register);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Dreams) to respond directly to events.

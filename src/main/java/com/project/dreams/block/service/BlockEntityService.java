@@ -2,7 +2,6 @@ package com.project.dreams.block.service;
 
 import com.project.dreams.Dreams;
 import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntity;
-import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntityRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
