@@ -6,7 +6,7 @@ import com.project.dreams.block.domain.model.oil_lamp.block.OilLampBlock;
 import com.project.dreams.block.service.BlockEntityService;
 import com.project.dreams.item.domain.model.oil_lamp.OilLampDataComponents;
 import com.project.dreams.item.service.ItemRegisterService;
-import com.project.dreams.item.service.oil_lamp.OilLampLogic;
+import com.project.dreams.item.service.oil_lamp.OilLampLogicService;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,7 +28,7 @@ public class OilLampBlockEntity extends BlockEntity implements OilLampFuelDTO {
     public static void tick(Level level, BlockPos pos, BlockState state, OilLampBlockEntity be) {
         if (level.isClientSide()) return;
 
-        OilLampLogic.tickFuel(be);
+        OilLampLogicService.tickFuel(be);
         
         if (be.getTickAccum() == 0) { // Indica que houve mudança de combustível ou tick processado
             be.setChanged();

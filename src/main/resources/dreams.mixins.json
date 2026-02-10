@@ -1,16 +1,15 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.8.5",
+  "compatibilityLevel": "JAVA_17",
   "package": "com.project.dreams.config.mixin",
-  "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
   "client": [
-    "IrisConfigMixin",
+    "SodiumConfigMixin",
     "CameraMixin",
     "ClientInputAccessor",
-    "MouseHandlerMixin",
-    "GameRendererMixin"
+    "MouseHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

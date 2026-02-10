@@ -27,7 +27,7 @@ public class ItemRegisterService {
     );
 
     public static final DeferredItem<Item> OIL_BOTTLE = ITEMS.registerSimpleItem("oil_bottle");
-
+    public static final DeferredItem<Item> RED_KEY = ITEMS.registerSimpleItem("red_key");
 
 
     public static void register(IEventBus eventBus) {

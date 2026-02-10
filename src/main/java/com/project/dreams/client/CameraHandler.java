@@ -47,8 +47,10 @@ public class CameraHandler {
             if (isLocked && !wasLocked) {
                 oldCameraType = mc.options.getCameraType();
                 mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
+                mc.options.bobView().set(false);
             } else if (!isLocked && wasLocked) {
                 mc.options.setCameraType(oldCameraType);
+                mc.options.bobView().set(true);
             }
         });
     }
@@ -109,6 +111,7 @@ public class CameraHandler {
             isLocked = false;
             useArea = false;
             mc.options.setCameraType(oldCameraType);
+            mc.options.bobView().set(true);
         }
     }
 }

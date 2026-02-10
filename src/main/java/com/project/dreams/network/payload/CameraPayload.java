@@ -6,6 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.project.dreams.Dreams;
+import org.jspecify.annotations.NonNull;
 
 public record CameraPayload(
         boolean active,
@@ -38,7 +39,7 @@ public record CameraPayload(
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public @NonNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

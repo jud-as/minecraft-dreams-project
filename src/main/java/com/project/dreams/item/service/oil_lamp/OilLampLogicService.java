@@ -7,7 +7,7 @@ import com.project.dreams.Settings;
  * Lógica compartilhada para o funcionamento da Lâmpada de Óleo.
  * Evita a redundância de código entre Item e Bloco.
  */
-public class OilLampLogic {
+public class OilLampLogicService {
     public static final int TICKS_PER_SECOND = 20;
 
     /**

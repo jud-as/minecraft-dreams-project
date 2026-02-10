@@ -6,7 +6,7 @@ import com.project.dreams.block.service.BlockService;
 import com.project.dreams.block.domain.model.oil_lamp.block.OilLampBlock;
 import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntity;
 import com.project.dreams.item.service.ItemRegisterService;
-import com.project.dreams.item.service.oil_lamp.OilLampLogic;
+import com.project.dreams.item.service.oil_lamp.OilLampLogicService;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -47,7 +47,7 @@ public class OilLampItem extends BlockItem {
     public void inventoryTick(@NonNull ItemStack stack, @NonNull ServerLevel level, @NonNull Entity entity, EquipmentSlot slot) {
         ensureDefaults(stack);
 
-        OilLampLogic.tickFuel(new ItemStackFuelWrapper(stack));
+        OilLampLogicService.tickFuel(new ItemStackFuelWrapper(stack));
 
         if (getIsOn(stack)) {
             if (entity instanceof Player player) {

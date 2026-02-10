@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "locked=true": { "model": "dreams:block/red_door" },
+    "locked=false": { "model": "dreams:block/red_door_ulocked" }
+  }
+}

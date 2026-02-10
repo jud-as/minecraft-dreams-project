@@ -1,0 +1,17 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"property": "minecraft:component",
+		"model": "dreams:item/red_key",
+		"component": "dreams:is_on",
+		"cases": [
+			{
+				"when": "true",
+				"model": {
+					"type": "minecraft:model",
+					"model": "dreams:item/red_key"
+				}
+			}
+		]
+	}
+}
