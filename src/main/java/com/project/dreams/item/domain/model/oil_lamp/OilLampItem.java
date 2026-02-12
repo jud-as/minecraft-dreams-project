@@ -2,7 +2,7 @@ package com.project.dreams.item.domain.model.oil_lamp;
 
 import com.project.dreams.block.domain.model.oil_lamp.dto.mapper.OilLampFuelDTO;
 import com.project.dreams.Settings;
-import com.project.dreams.block.service.BlockService;
+import com.project.dreams.block.service.BlockRegisterService;
 import com.project.dreams.block.domain.model.oil_lamp.block.OilLampBlock;
 import com.project.dreams.block.domain.model.oil_lamp.block_entity.OilLampBlockEntity;
 import com.project.dreams.item.service.ItemRegisterService;
@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 public class OilLampItem extends BlockItem {
 
     public OilLampItem(Properties properties) {
-        super(BlockService.OIL_LAMP_BLOCK.get(), properties.stacksTo(1).durability(100));
+        super(BlockRegisterService.OIL_LAMP_BLOCK.get(), properties.stacksTo(1).durability(100));
     }
 
     /**

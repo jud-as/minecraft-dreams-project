@@ -1,6 +1,6 @@
 package com.project.dreams;
 
-import com.project.dreams.block.service.BlockService;
+import com.project.dreams.block.service.BlockRegisterService;
 import com.project.dreams.block.service.BlockEntityService;
 import com.project.dreams.item.service.ItemRegisterService;
 import com.project.dreams.item.domain.model.oil_lamp.OilLampDataComponents;
@@ -59,7 +59,7 @@ public class Dreams {
         NeoForge.EVENT_BUS.register(this);
 
         ItemRegisterService.register(modEventBus);
-        BlockService.register(modEventBus);
+        BlockRegisterService.register(modEventBus);
         BlockEntityService.register(modEventBus);
         OilLampDataComponents.register(modEventBus);
 
@@ -100,7 +100,6 @@ public class Dreams {
 
             event.accept(ItemRegisterService.OIL_BOTTLE.get());
 
-            event.accept(ItemRegisterService.RED_KEY.get());
         }
     }
 

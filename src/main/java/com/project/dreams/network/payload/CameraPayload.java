@@ -34,7 +34,7 @@ public record CameraPayload(
     );
 
     // Constructor for simple lock/unlock
-    public CameraPayload(boolean active, double x, double y, double z, float yaw, float pitch) {
+    public  CameraPayload(boolean active, double x, double y, double z, float yaw, float pitch) {
         this(active, x, y, z, yaw, pitch, false, 0, 0, 0, 0);
     }
 

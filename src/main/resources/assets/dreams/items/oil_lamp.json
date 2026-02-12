@@ -1,17 +1,23 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "property": "minecraft:component",
-    "model": "dreams:item/oil_lamp",
-    "component": "dreams:is_on",
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
     "cases": [
       {
-        "when": "true",
+        "when": [
+          "gui",
+          "ground",
+          "fixed"
+        ],
         "model": {
           "type": "minecraft:model",
           "model": "dreams:item/oil_lamp"
         }
       }
-    ]
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "dreams:block/oil_lamp"
+    }
   }
 }

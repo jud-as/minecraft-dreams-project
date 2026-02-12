@@ -8,7 +8,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class BlockService {
+public class BlockRegisterService {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(Dreams.MOD_ID);
 
@@ -21,7 +21,6 @@ public class BlockService {
                     .sound(SoundType.LANTERN)
                     .noOcclusion()
     );
-
 
 
     public static void register(IEventBus eventBus) {
